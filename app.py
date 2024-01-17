@@ -11,6 +11,12 @@ class Contact:
         self.address=contact_tuple[4]
         self.user=contact_tuple[5]
 
+def query(sql):
+    with sqlite3.connect("contacts.db") as conn:
+        cur=conn.cursor()
+        rows=cur.execute(sql)
+        return [Contact(row) for row in rows.fetchall()]
+
 def get_contacts():
     with sqlite3.connect("contacts.db") as conn:
         cur=conn.cursor()
@@ -21,3 +27,8 @@ def get_contacts():
 @app.route('/')
 def home():
     return render_template("home.html", contacts=get_contacts())
+
+@app.route('/delete')
+def delete():
+    query(f"DELETE FROM contacts where id={request.args['id']}")
+    return home()
