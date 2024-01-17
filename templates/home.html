@@ -6,6 +6,15 @@
     <title>Contacts</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
+<script>
+    function validate(email, formId){
+        if (email.includes("gmail")){
+            alert("Cannot delete this user");
+            return;
+        }
+        document.getElementById(formId).submit();
+    }
+</script>
 <body>
     <h1>אנשי קשר</h1>
     <div class="contacts">
@@ -16,10 +25,10 @@
             <div class="email">{{contact.email}}</div>
             <div class="address">{{contact.address}}</div>
             <div class="delete">
-                <form action="/delete" method="get">
+                <form action="/delete" method="get" id="deleteForm{{contact.id}}">
                     <input type="hidden" name="id" value='{{ contact.id }}'>
-                    <input type="submit" name="" id="" value="Delete">
                 </form>
+                <button onclick="validate('{{contact.email}}', 'deleteForm{{contact.id}}')">Delete</button>
             </div>
         </div>    
     {% endfor %}
